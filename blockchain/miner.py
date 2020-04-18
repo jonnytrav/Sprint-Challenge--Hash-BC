@@ -28,7 +28,7 @@ def proof_of_work(last_proof):
     #  TODO: Your code here
     proof = 0
     while valid_proof(last_proof, proof) is not True:
-        proof += 1
+        proof += random.randint(1, 30) * 60
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
