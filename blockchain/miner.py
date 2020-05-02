@@ -3,6 +3,8 @@ import requests
 
 import sys
 
+import json
+
 from uuid import uuid4
 
 from timeit import default_timer as timer
@@ -23,8 +25,10 @@ def proof_of_work(last_proof):
     start = timer()
 
     print("Searching for next proof")
-    proof = 0
     #  TODO: Your code here
+    proof = 0
+    while valid_proof(last_proof, proof) is not True:
+        proof += random.randint(1, 30) * 60
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -38,9 +42,15 @@ def valid_proof(last_hash, proof):
 
     IE:  last_hash: ...AE912345, new hash 12345E88...
     """
+    # last 5 of last hash
+    # do they match first 5 of the hashed proof?
+    guess = str(proof).encode()
+    guess_hashed = hashlib.sha256(guess).hexdigest()
 
-    # TODO: Your code here!
-    pass
+    last = str(last_hash).encode()
+    last_hashed = hashlib.sha256(last).hexdigest()
+
+    return guess_hashed[:6] == last_hashed[-6:]
 
 
 if __name__ == '__main__':
